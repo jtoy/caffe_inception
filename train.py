@@ -88,87 +88,19 @@ if __name__ == '__main__':
         x=x+1
     file.close()
     print "Finished creating train.txt"
-
-
-
-
-	train_d = []
-	args = parser.parse_args()
-	temp_dir = '/tmp/input/'
-	if os.path.exists(temp_dir):
-			print 'Directory Exist'
-        else:
-			os.makedirs(temp_dir)
-	train_dir = temp_dir
-	if os.path.exists('/tmp/caffe/images/train_lmdb'):
-            print 'Directory Exist'
-        else:
-            os.makedirs(train_lmdb)
-            os.makedirs(validation_lmdb)
-	os.system('cp -r /data/input/* ' + temp_dir)
-	trainlist = os.listdir(temp_dir)
-	os.chdir(temp_dir)
-	train_d_1 = []
-	rem_dir = []
-	for a in trainlist:
-		if os.path.isdir(a):
-			rem_dir.append(a)
-			train_d_1.append([img for img in glob.glob(temp_dir+a+'/*')])
-	train_data_1 = [val for sublist in train_d_1 for val in sublist]
-	count = 0
-	for a in train_data_1:
-		os.system('mkdir -p %s;mv %s %s;'%(count,a,count))
-		count +=1
-	for a in rem_dir:
-		os.system('rm -rf '+a)
-		print ("removing %s" % a)
-	os.system('rm -rf  ' + train_lmdb)
-	os.system('rm -rf  ' + validation_lmdb)
-	t_dir = os.listdir(train_dir)
-	for a in t_dir:
-	   train_d.append([img for img in glob.glob(train_dir+a+'/*')])
-	#for b in v_dir:
-	   #test_d.append([img for img in glob.glob(val_dir+b+'/*')])
-	train_data = [val for sublist in train_d for val in sublist]
-
-	#Shuffle train_data
-	random.shuffle(train_data)
-	os.chdir('/home/ubuntu/experiment/')
-	print 'Creating train_lmdb'
-	in_db = lmdb.open(train_lmdb, map_size=int(1e12))
-	with in_db.begin(write=True) as in_txn:
-	    for in_idx, img_path in enumerate(train_data):
-	       try:
-		  img = cv2.imread(img_path, cv2.IMREAD_COLOR)
-		  img = transform_img(img, img_width=IMAGE_WIDTH, img_height=IMAGE_HEIGHT)
-		  for a,b in enumerate(t_dir):
-			if b in img_path:
-				label = a
-		  datum = make_datum(img, label)
-		  in_txn.put('{:0>5d}'.format(in_idx), datum.SerializeToString())
-		  print '{:0>5d}'.format(in_idx) + ':' + img_path
-	       except:
-		  print ("failed")
-	in_db.close()
-
-	print '\nCreating validation_lmdb'
-	in_db = lmdb.open(validation_lmdb, map_size=int(1e12))
-	with in_db.begin(write=True) as in_txn:
-	    for in_idx, img_path in enumerate(train_data):
-	      try:
-		img = cv2.imread(img_path, cv2.IMREAD_COLOR)
-		img = transform_img(img, img_width=IMAGE_WIDTH, img_height=IMAGE_HEIGHT)
-		for a,b in enumerate(t_dir):
-			if b in img_path:
-				label = a
-		datum = make_datum(img, label)
-		in_txn.put('{:0>5d}'.format(in_idx), datum.SerializeToString())
-		print '{:0>5d}'.format(in_idx) + ':' + img_path
-	      except:
-		print ('valiadtion failed')
-	in_db.close()
-        print '\nComputing mean training images'
-        code = subprocess.call('/usr/local/caffe/build/tools/compute_image_mean /tmp/caffe/images/train_lmdb /tmp/caffe/images/train_lmdb/train.binaryproto', shell=True)
+    print "Creating val.txt"
+    code = subprocess.call('cp /data/input/train.txt /data/input/val.txt')
+    if code != 0:
+        raise Exception("Failed to create val.txt")
+    print "Creating train_lmdb"
+    code = subprocess.call('/usr/local/caffe/build/tools/convert_imageset --resize_height=256 --resize_width=256 --shuffle /data/input/ train.txt /tmp/caffe/images/train_lmdb')
+    if code != 0:
+        raise Exception("Failed to create train_lmdb")
+    code = subprocess.call('/usr/local/caffe/build/tools/convert_imageset --resize_height=256 --resize_width=256 --shuffle /data/input/ val.txt /tmp/caffe/images/val_lmdb')
+    if code != 0:
+        raise Exception("Failed to create val_lmdb")
+    print '\nComputing mean training images'
+    code = subprocess.call('/usr/local/caffe/build/tools/compute_image_mean /tmp/caffe/images/train_lmdb /tmp/caffe/images/train_lmdb/train.binaryproto', shell=True)
 	if code != 0:
            raise Exception("Failed to compute training mean")
         print '\nComputing mean validation images'
