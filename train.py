@@ -75,6 +75,23 @@ if __name__ == '__main__':
 	train_lmdb = '/tmp/caffe/images/train_lmdb'
 	validation_lmdb = '/tmp/caffe/images/validation_lmdb'
 
+    #make train.txt and val.txt
+    imagedir = '/data/input/images'
+    file = open('/data/input/train.txt','w')
+    x = -1
+    for parent,dirnames,filenames in os.walk(imagedir):
+        for parent,dirname in filenames:
+            list=os.path.split(parent)[-1]
+            file.write("images/" + list + "/" + dirname)
+            file.write(' '+"%d"%x)
+            file.write('\n')
+        x=x+1
+    file.close()
+    print "Finished creating train.txt"
+
+
+
+
 	train_d = []
 	args = parser.parse_args()
 	temp_dir = '/tmp/input/'
