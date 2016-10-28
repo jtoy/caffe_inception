@@ -1,0 +1,37 @@
+General:
+  name: Somatic.io Demo for deep dream deep learning project
+
+Initialize:
+  _comment: remov hardcoded paths 
+  workspace: /home/ubuntu/experiment/
+
+Train:
+  command: bash train.sh 
+  parameters:
+    --snap:
+      flag: --snap
+      type: string
+      default: 2500
+    --iter:
+      flag: --iter
+      type: integer
+      default: 5000
+
+Inference:
+  command: bash inference.sh	
+  parameters:
+   --layer:
+     flag: --layer
+     type: string
+     default: 'inception_4c/output'
+   --image:
+     flag: --image
+     type: file
+     required: True
+   --iteration_count:
+     flag:  --iteration_count
+     type: integer
+     default: 20
+   --guide:
+     flag: --guide
+     type: file
