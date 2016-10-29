@@ -72,7 +72,7 @@ if __name__ == '__main__':
     parser.add_argument('--snap', default='2500',type = str, help='When to trigger capture snapshot')
     parser.add_argument('--iter', default='5000', type = str, help='Number of iterations')
     train_lmdb = '/tmp/caffe/images/train_lmdb'
-    validation_lmdb = '/tmp/caffe/images/validation_lmdb'
+    validation_lmdb = '/tmp/caffe/images/val_lmdb'
 
     #make train.txt and val.txt
     imagedir = "/data/input/images"
@@ -106,11 +106,11 @@ if __name__ == '__main__':
     if code != 0:
         raise Exception("Failed to compute training mean")
     print '\nComputing mean validation images'
-    code = subprocess.call('/usr/local/caffe/build/tools/compute_image_mean /tmp/caffe/images/val_lmdb /tmp/caffe/images/validation_lmdb/validate.binaryproto', shell=True)
+    code = subprocess.call('/usr/local/caffe/build/tools/compute_image_mean /tmp/caffe/images/val_lmdb /tmp/caffe/images/val_lmdb/validate.binaryproto', shell=True)
     if code != 0:
         raise Exception("Failed to compute validatin mean")
     print '\nFinished processing all images'
-    path = create_train(train_lmdb, validation_lmdb,str(len(t_dir)),'/tmp/caffe/images/train_lmdb/train.binaryproto','/tmp/caffe/images/validation_lmdb/validate.binaryproto')
+    path = create_train(train_lmdb, validation_lmdb,str(len(t_dir)),'/tmp/caffe/images/train_lmdb/train.binaryproto','/tmp/caffe/images/val_lmdb/validate.binaryproto')
     create_solver('/data/model_cache/train.prototxt', args.iter, snap=args.snap)
     create_deploy('/data/model_cache/deploy.prototxt')
     os.chdir("/data/model_cache/")
