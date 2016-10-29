@@ -106,7 +106,7 @@ if __name__ == '__main__':
     if code != 0:
         raise Exception("Failed to compute training mean")
     print '\nComputing mean validation images'
-    code = subprocess.call('/usr/local/caffe/build/tools/compute_image_mean /tmp/caffe/images/train_lmdb /tmp/caffe/images/validation_lmdb/validate.binaryproto', shell=True)
+    code = subprocess.call('/usr/local/caffe/build/tools/compute_image_mean /tmp/caffe/images/val_lmdb /tmp/caffe/images/validation_lmdb/validate.binaryproto', shell=True)
     if code != 0:
         raise Exception("Failed to compute validatin mean")
     print '\nFinished processing all images'
