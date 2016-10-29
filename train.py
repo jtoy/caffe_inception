@@ -80,7 +80,7 @@ if __name__ == '__main__':
     file = open('/tmp/train.txt','w')
     x = -1
     for parent,dirnames,filenames in os.walk(imagedir):
-        for parent,dirname in filenames:
+        for dirname in filenames:
             list=os.path.split(parent)[-1]
             file.write("images/" + list + "/" + dirname)
             file.write(' '+"%d"%x)
