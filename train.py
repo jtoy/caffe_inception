@@ -99,19 +99,19 @@ if __name__ == '__main__':
     code = subprocess.call('/usr/local/caffe/build/tools/convert_imageset --resize_height=256 --resize_width=256 --shuffle /data/input/ /tmp/train.txt /tmp/caffe/images/train_lmdb', shell=True)
     if code != 0:
         raise Exception("Failed to create train_lmdb")
-    code = subprocess.call('/usr/local/caffe/build/tools/convert_imageset --resize_height=256 --resize_width=256 --shuffle /data/input/ /tmp/val.txt /tmp/caffe/images/val_lmdb', shell=True)
+    code = subprocess.call('/usr/local/caffe/build/tools/convert_imageset --resize_height=256 --resize_width=256 --shuffle /data/input/ /tmp/val.txt /tmp/caffe/images/validation_lmdb', shell=True)
     if code != 0:
-        raise Exception("Failed to create val_lmdb")
+        raise Exception("Failed to create validation_lmdb")
     print '\nComputing mean training images'
     code = subprocess.call('/usr/local/caffe/build/tools/compute_image_mean /tmp/caffe/images/train_lmdb /tmp/caffe/images/train_lmdb/train.binaryproto', shell=True)
     if code != 0:
         raise Exception("Failed to compute training mean")
     print '\nComputing mean validation images'
-    code = subprocess.call('/usr/local/caffe/build/tools/compute_image_mean /tmp/caffe/images/val_lmdb /tmp/caffe/images/val_lmdb/validate.binaryproto', shell=True)
+    code = subprocess.call('/usr/local/caffe/build/tools/compute_image_mean /tmp/caffe/images/validation_lmdb /tmp/caffe/images/validation_lmdb/validate.binaryproto', shell=True)
     if code != 0:
         raise Exception("Failed to compute validatin mean")
     print '\nFinished processing all images'
-    path = create_train(train_lmdb, validation_lmdb, str(len(os.walk('/data/input/images').next()[1])), '/tmp/caffe/images/train_lmdb/train.binaryproto','/tmp/caffe/images/val_lmdb/validate.binaryproto')
+    path = create_train(train_lmdb, validation_lmdb, str(len(os.walk('/data/input/images').next()[1])), '/tmp/caffe/images/train_lmdb/train.binaryproto','/tmp/caffe/images/validatin_lmdb/validate.binaryproto')
     create_solver('/data/model_cache/train.prototxt', args.iter, snap=args.snap)
     create_deploy('/data/model_cache/deploy.prototxt', str(len(os.walk('/data/input/images').next()[1])))
     os.chdir("/data/model_cache/")
