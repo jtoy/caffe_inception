@@ -77,7 +77,7 @@ if __name__ == '__main__':
     #make train.txt and val.txt
     imagedir = "/data/input/images"
 
-    file = open('/data/input/train.txt','w')
+    file = open('/tmp/train.txt','w')
     x = -1
     for parent,dirnames,filenames in os.walk(imagedir):
         for parent,dirname in filenames:
@@ -89,14 +89,14 @@ if __name__ == '__main__':
     file.close()
     print "Finished creating train.txt"
     print "Creating val.txt"
-    code = subprocess.call('cp /data/input/train.txt /data/input/val.txt')
+    code = subprocess.call('cp /tmp/train.txt /tmp/val.txt')
     if code != 0:
         raise Exception("Failed to create val.txt")
     print "Creating train_lmdb"
-    code = subprocess.call('/usr/local/caffe/build/tools/convert_imageset --resize_height=256 --resize_width=256 --shuffle /data/input/ train.txt /tmp/caffe/images/train_lmdb')
+    code = subprocess.call('/usr/local/caffe/build/tools/convert_imageset --resize_height=256 --resize_width=256 --shuffle /data/input/ /tmp/train.txt /tmp/caffe/images/train_lmdb')
     if code != 0:
         raise Exception("Failed to create train_lmdb")
-    code = subprocess.call('/usr/local/caffe/build/tools/convert_imageset --resize_height=256 --resize_width=256 --shuffle /data/input/ val.txt /tmp/caffe/images/val_lmdb')
+    code = subprocess.call('/usr/local/caffe/build/tools/convert_imageset --resize_height=256 --resize_width=256 --shuffle /data/input/ /tmp/val.txt /tmp/caffe/images/val_lmdb')
     if code != 0:
         raise Exception("Failed to create val_lmdb")
     print '\nComputing mean training images'
