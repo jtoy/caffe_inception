@@ -76,7 +76,7 @@ if __name__ == '__main__':
 	validation_lmdb = '/tmp/caffe/images/validation_lmdb'
 
     #make train.txt and val.txt
-    imagedir = '/data/input/images'
+    imagedir = "/data/input/images"
     file = open('/data/input/train.txt','w')
     x = -1
     for parent,dirnames,filenames in os.walk(imagedir):
