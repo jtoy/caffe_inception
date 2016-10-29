@@ -111,7 +111,7 @@ if __name__ == '__main__':
     if code != 0:
         raise Exception("Failed to compute validatin mean")
     print '\nFinished processing all images'
-    path = create_train(train_lmdb, validation_lmdb, str(len(os.walk('/data/input/images').next()[1])), '/tmp/caffe/images/train_lmdb/train.binaryproto','/tmp/caffe/images/validatin_lmdb/validate.binaryproto')
+    path = create_train(train_lmdb, validation_lmdb, str(len(os.walk('/data/input/images').next()[1])), '/tmp/caffe/images/train_lmdb/train.binaryproto','/tmp/caffe/images/validation_lmdb/validate.binaryproto')
     create_solver('/data/model_cache/train.prototxt', args.iter, snap=args.snap)
     create_deploy('/data/model_cache/deploy.prototxt', str(len(os.walk('/data/input/images').next()[1])))
     os.chdir("/data/model_cache/")
