@@ -24,7 +24,7 @@ def create_solver(train_path,iteration,snap='5000'):
       f.write(text)
     print "Succesfully created solver.proto file"
 
-def create_train(train_path, eval_path, classes,mean_train,mean_val):
+def create_train(train_path, eval_path, classes, mean_train,mean_val):
     filename = '/data/model_cache/train.prototxt'
     with open('train_proto_template', 'r') as f:
       text = f.read()
@@ -32,17 +32,17 @@ def create_train(train_path, eval_path, classes,mean_train,mean_val):
     text = text.replace('$eval_lmdb', eval_path)
     text = text.replace('$mean_train', mean_train)
     text = text.replace('$mean_val', mean_val)
-    text = text.replace('$class_count', '1000')
+    text = text.replace('$class_count', classes)
     with open(filename, 'w') as f:
       f.write(text)
     print "Succesfully created train_val.proto file"
     return filename
 
-def create_deploy(train_path):
+def create_deploy(train_path, classes):
     filename = '/data/model_cache/deploy.prototxt'
     with open('deploy_proto_template', 'r') as f:
       text = f.read()
-    text = text.replace('$class_count', '1000')
+    text = text.replace('$class_count', classes)
     with open(filename, 'w') as f:
       f.write(text)
     print "Succesfully created deploy.proto file"
@@ -72,7 +72,7 @@ if __name__ == '__main__':
     parser.add_argument('--snap', default='2500',type = str, help='When to trigger capture snapshot')
     parser.add_argument('--iter', default='5000', type = str, help='Number of iterations')
     train_lmdb = '/tmp/caffe/images/train_lmdb'
-    validation_lmdb = '/tmp/caffe/images/val_lmdb'
+    validation_lmdb = '/tmp/caffe/images/validation_lmdb'
 
     #make train.txt and val.txt
     imagedir = "/data/input/images"
@@ -110,9 +110,9 @@ if __name__ == '__main__':
     if code != 0:
         raise Exception("Failed to compute validatin mean")
     print '\nFinished processing all images'
-    path = create_train(train_lmdb, validation_lmdb,str(len(t_dir)),'/tmp/caffe/images/train_lmdb/train.binaryproto','/tmp/caffe/images/val_lmdb/validate.binaryproto')
+    path = create_train(train_lmdb, validation_lmdb, len(os.walk('/data/input/images').next()[1]), '/tmp/caffe/images/train_lmdb/train.binaryproto','/tmp/caffe/images/val_lmdb/validate.binaryproto')
     create_solver('/data/model_cache/train.prototxt', args.iter, snap=args.snap)
-    create_deploy('/data/model_cache/deploy.prototxt')
+    create_deploy('/data/model_cache/deploy.prototxt', len(os.walk('/data/input/images').next()[1]))
     os.chdir("/data/model_cache/")
     print ("starting training now")
     code = subprocess.call('/usr/local/caffe/distribute/bin/caffe.bin train -gpu 0 -solver solver.prototxt -weights /tmp/google/bvlc_googlenet.caffemodel', shell=True)
