@@ -67,9 +67,8 @@ def make_datum(img, label):
         data=np.rollaxis(img, 2).tostring())
 
 if __name__ == '__main__':
-	parser = argparse.ArgumentParser(
-        description = "Generate Caffe models from a given image directory")
-        parser.add_argument('--image_path', default='/data/input/', help='input image dir e.g:/path/images/classes')
+	parser = argparse.ArgumentParser(description = "Generate Caffe models from a given image directory")
+    parser.add_argument('--image_path', default='/data/input/', help='input image dir e.g:/path/images/classes')
 	parser.add_argument('--snap', default='2500',type = str, help='When to trigger capture snapshot')
 	parser.add_argument('--iter', default='5000', type = str, help='Number of iterations')
 	train_lmdb = '/tmp/caffe/images/train_lmdb'
@@ -77,6 +76,7 @@ if __name__ == '__main__':
 
     #make train.txt and val.txt
     imagedir = "/data/input/images"
+
     file = open('/data/input/train.txt','w')
     x = -1
     for parent,dirnames,filenames in os.walk(imagedir):
