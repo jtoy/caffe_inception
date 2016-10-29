@@ -71,6 +71,7 @@ if __name__ == '__main__':
     parser.add_argument('--image_path', default='/data/input/', help='input image dir e.g:/path/images/classes')
     parser.add_argument('--snap', default='2500',type = str, help='When to trigger capture snapshot')
     parser.add_argument('--iter', default='5000', type = str, help='Number of iterations')
+    args = parser.parse_args()
     train_lmdb = '/tmp/caffe/images/train_lmdb'
     validation_lmdb = '/tmp/caffe/images/validation_lmdb'
 
