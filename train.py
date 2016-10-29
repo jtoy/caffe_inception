@@ -94,7 +94,7 @@ if __name__ == '__main__':
         raise Exception("Failed to create val.txt")
     print "Creating train_lmdb"
     os.system('rm -rf  ' + train_lmdb)
-    os.system('rm -rf  ' + val_lmdb)
+    os.system('rm -rf  ' + validation_lmdb)
     code = subprocess.call('/usr/local/caffe/build/tools/convert_imageset --resize_height=256 --resize_width=256 --shuffle /data/input/ /tmp/train.txt /tmp/caffe/images/train_lmdb', shell=True)
     if code != 0:
         raise Exception("Failed to create train_lmdb")
