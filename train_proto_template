@@ -897,10 +897,10 @@ layer {
   }
 }
 layer {
-  name: "loss1/classifier"
+  name: "loss1/classifier_zzzz"
   type: "InnerProduct"
   bottom: "loss1/fc"
-  top: "loss1/classifier"
+  top: "loss1/classifier_zzzz"
   param {
     lr_mult: 1
     decay_mult: 1
@@ -923,7 +923,7 @@ layer {
 layer {
   name: "loss1/loss"
   type: "SoftmaxWithLoss"
-  bottom: "loss1/classifier"
+  bottom: "loss1/classifier_zzzz"
   bottom: "label"
   top: "loss1/loss1"
   loss_weight: 0.3
@@ -931,7 +931,7 @@ layer {
 layer {
   name: "loss1/top-1"
   type: "Accuracy"
-  bottom: "loss1/classifier"
+  bottom: "loss1/classifier_zzzz"
   bottom: "label"
   top: "loss1/top-1"
   include {
@@ -941,7 +941,7 @@ layer {
 layer {
   name: "loss1/top-5"
   type: "Accuracy"
-  bottom: "loss1/classifier"
+  bottom: "loss1/classifier_zzzz"
   bottom: "label"
   top: "loss1/top-5"
   include {
@@ -1660,10 +1660,10 @@ layer {
   }
 }
 layer {
-  name: "loss2/classifier"
+  name: "loss2/classifier_zzzz"
   type: "InnerProduct"
   bottom: "loss2/fc"
-  top: "loss2/classifier"
+  top: "loss2/classifier_zzzz"
   param {
     lr_mult: 1
     decay_mult: 1
@@ -1686,7 +1686,7 @@ layer {
 layer {
   name: "loss2/loss"
   type: "SoftmaxWithLoss"
-  bottom: "loss2/classifier"
+  bottom: "loss2/classifier_zzzz"
   bottom: "label"
   top: "loss2/loss1"
   loss_weight: 0.3
@@ -1694,7 +1694,7 @@ layer {
 layer {
   name: "loss2/top-1"
   type: "Accuracy"
-  bottom: "loss2/classifier"
+  bottom: "loss2/classifier_zzzz"
   bottom: "label"
   top: "loss2/top-1"
   include {
@@ -1704,7 +1704,7 @@ layer {
 layer {
   name: "loss2/top-5"
   type: "Accuracy"
-  bottom: "loss2/classifier"
+  bottom: "loss2/classifier_zzzz"
   bottom: "label"
   top: "loss2/top-5"
   include {
@@ -2373,10 +2373,10 @@ layer {
   }
 }
 layer {
-  name: "loss3/classifier"
+  name: "loss3/classifier_zzzz"
   type: "InnerProduct"
   bottom: "pool5/7x7_s1"
-  top: "loss3/classifier"
+  top: "loss3/classifier_zzzz"
   param {
     lr_mult: 1
     decay_mult: 1
@@ -2399,7 +2399,7 @@ layer {
 layer {
   name: "loss3/loss3"
   type: "SoftmaxWithLoss"
-  bottom: "loss3/classifier"
+  bottom: "loss3/classifier_zzzz"
   bottom: "label"
   top: "loss3/loss3"
   loss_weight: 1
@@ -2407,7 +2407,7 @@ layer {
 layer {
   name: "loss3/top-1"
   type: "Accuracy"
-  bottom: "loss3/classifier"
+  bottom: "loss3/classifier_zzzz"
   bottom: "label"
   top: "loss3/top-1"
   include {
@@ -2417,7 +2417,7 @@ layer {
 layer {
   name: "loss3/top-5"
   type: "Accuracy"
-  bottom: "loss3/classifier"
+  bottom: "loss3/classifier_zzzz"
   bottom: "label"
   top: "loss3/top-5"
   include {
