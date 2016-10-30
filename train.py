@@ -13,13 +13,12 @@ import argparse
 IMAGE_WIDTH = 226
 IMAGE_HEIGHT = 226
 
-def create_solver(train_path,iteration,snap='5000'):
+def create_solver(train_path,iteration):
     filename = '/data/model_cache/solver.prototxt'
     with open('solver_template', 'r') as f:
       text = f.read()
     text = text.replace('$train_path', train_path)
     text = text.replace('$iter', iteration)
-    text = text.replace('$snap', snap)
     with open(filename, 'w') as f:
       f.write(text)
     print "Succesfully created solver.proto file"
@@ -69,7 +68,7 @@ def make_datum(img, label):
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description = "Generate Caffe models from a given image directory")
     parser.add_argument('--image_path', default='/data/input/', help='input image dir e.g:/path/images/classes')
-    parser.add_argument('--snap', default='2500',type = str, help='When to trigger capture snapshot')
+    #parser.add_argument('--snap', default='2500',type = str, help='When to trigger capture snapshot')
     parser.add_argument('--iter', default='5000', type = str, help='Number of iterations')
     args = parser.parse_args()
     train_lmdb = '/tmp/caffe/images/train_lmdb'
@@ -112,7 +111,7 @@ if __name__ == '__main__':
         raise Exception("Failed to compute validatin mean")
     print '\nFinished processing all images'
     path = create_train(train_lmdb, validation_lmdb, str(len(os.walk('/data/input/images').next()[1])), '/tmp/caffe/images/train_lmdb/train.binaryproto','/tmp/caffe/images/validation_lmdb/validate.binaryproto')
-    create_solver('/data/model_cache/train.prototxt', args.iter, snap=args.snap)
+    create_solver('/data/model_cache/train.prototxt', args.iter)
     create_deploy('/data/model_cache/deploy.prototxt', str(len(os.walk('/data/input/images').next()[1])))
     os.chdir("/data/model_cache/")
     print ("starting training now")
