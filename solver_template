@@ -11,6 +11,4 @@ gamma: 0.96
 max_iter: $iter
 momentum: 0.9
 weight_decay: 0.0002
-snapshot: $snap
-snapshot_prefix: ""
 solver_mode: GPU
