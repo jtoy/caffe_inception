@@ -9,7 +9,7 @@ layer {
   }
   transform_param {
     mirror: true
-    crop_size: 226
+    crop_size: 224
     mean_file: "$mean_train"
   }
   data_param {
@@ -28,7 +28,7 @@ layer {
   }
   transform_param {
     mirror: false
-    crop_size: 226
+    crop_size: 224
     mean_file: "$mean_val"
   }
   data_param {
