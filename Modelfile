@@ -8,10 +8,6 @@ Initialize:
 Train:
   command: bash train.sh 
   parameters:
-    --snap:
-      flag: --snap
-      type: string
-      default: 2500
     --iter:
       flag: --iter
       type: integer
