@@ -80,7 +80,7 @@ if __name__ == '__main__':
     x = -2
     for parent,dirnames,filenames in os.walk(imagedir):
         for dirname in filenames:
-            file.write(dirname)
+            file.write(parent)
             file.write(' '+"%d"%x)
             file.write('\n')
         x=x+1
