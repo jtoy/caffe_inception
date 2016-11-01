@@ -76,12 +76,11 @@ if __name__ == '__main__':
 
     #make train.txt and val.txt
     imagedir = "/data/input"
-
     file = open('/tmp/train.txt','w')
     x = -2
     for parent,dirnames,filenames in os.walk(imagedir):
         for dirname in filenames:
-            file.write(parent + "/" + dirname)
+            file.write(dirname)
             file.write(' '+"%d"%x)
             file.write('\n')
         x=x+1
