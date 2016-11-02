@@ -86,6 +86,9 @@ if __name__ == '__main__':
                 file.write('\n')
         x=x+1
     file.close()
+
+    data_path = filter(os.path.isdir, [os.path.join(imagedir,f) for f in os.listdir(imagedir)])[0]
+
     print "Finished creating train.txt"
     print "Creating val.txt"
     code = subprocess.call('cp /tmp/train.txt /tmp/val.txt', shell=True)
@@ -111,7 +114,7 @@ if __name__ == '__main__':
     print '\nFinished processing all images'
     path = create_train(train_lmdb, validation_lmdb, str(len(os.walk('/data/input/images').next()[1])), '/tmp/caffe/images/train_lmdb/train.binaryproto','/tmp/caffe/images/validation_lmdb/validate.binaryproto')
     create_solver('/data/model_cache/train.prototxt', args.iter)
-    create_deploy('/data/model_cache/deploy.prototxt', str(len(os.walk('/data/input/images').next()[1])))
+    create_deploy('/data/model_cache/deploy.prototxt', str(len(os.walk(data_path).next()[1])))
     os.chdir("/data/model_cache/")
     print ("starting training now")
     code = subprocess.call('/usr/local/caffe/distribute/bin/caffe.bin train -gpu 0 -solver solver.prototxt -weights /tmp/google/bvlc_googlenet.caffemodel', shell=True)
