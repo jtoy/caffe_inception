@@ -80,9 +80,10 @@ if __name__ == '__main__':
     x = -2
     for parent,dirnames,filenames in os.walk(imagedir):
         for dirname in filenames:
-            file.write(parent.replace(imagedir,"") + "/" + dirname)
-            file.write(' '+"%d"%x)
-            file.write('\n')
+            if dirname != "input.txt"
+                file.write(parent.replace(imagedir+"/","") + "/" + dirname)
+                file.write(' '+"%d"%x)
+                file.write('\n')
         x=x+1
     file.close()
     print "Finished creating train.txt"
