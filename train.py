@@ -80,7 +80,7 @@ if __name__ == '__main__':
     x = -2
     for parent,dirnames,filenames in os.walk(imagedir):
         for dirname in filenames:
-            if dirname != "input.txt"
+            if dirname != "input.txt":
                 file.write(parent.replace(imagedir+"/","") + "/" + dirname)
                 file.write(' '+"%d"%x)
                 file.write('\n')
