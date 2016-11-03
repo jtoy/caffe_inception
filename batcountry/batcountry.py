@@ -186,10 +186,10 @@ class BatCountry:
 
 	# Add some new objective functions
 	@staticmethod
-	def one_hot_objective(dst, focus=None):
-		one_hot = np.zeros_like(dst.data)
-		one_hot.flat[focus] = 1
-		dst.diff[:] = one_hot
+	def disable_class_objective(dst, class=None):
+		dc = dst.data
+		dc.flat[class] = 1.
+		dst.diff[:] = dc
 
 	@staticmethod
 	def guided_objective(dst, objective_features):
