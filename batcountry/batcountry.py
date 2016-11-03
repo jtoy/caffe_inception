@@ -90,7 +90,7 @@ class BatCountry:
 				vis = deprocess_fn(self.net, src.data[0])
 
 				# adjust image contrast if clipping is disabled
-				if not clip: 
+				if not clip:
 					vis = vis * (255.0 / np.percentile(vis, 99.98))
 
 				if verbose:
@@ -184,6 +184,13 @@ class BatCountry:
 	def L2_objective(dst):
 		dst.diff[:] = dst.data
 
+	# Add some new objective functions
+	@staticmethod
+	def one_hot_objective(dst, focus=None):
+		one_hot = np.zeros_like(dst.data)
+		one_hot.flat[focus] = 1
+		dst.diff[:] = one_hot
+
 	@staticmethod
 	def guided_objective(dst, objective_features):
 		x = dst.data[0].copy()
@@ -193,7 +200,7 @@ class BatCountry:
 		y = y.reshape(ch,-1)
 
 		# compute the matrix of dot-products with guide features
-		A = x.T.dot(y) 
+		A = x.T.dot(y)
 
 		# select ones that match best
 		dst.diff[0].reshape(ch, -1)[:] = y[:,A.argmax(1)]
