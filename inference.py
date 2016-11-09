@@ -46,7 +46,7 @@ for layer in args.layer:
     iter_n=args.iteration_count, objective_fn=BatCountry.guided_objective,
     objective_features=features,)
 
-	elif args.mix-layer:
+	elif args.mixlayer:
 		mixed_features = bc.prepare_guide(Image.open(args.image), end=args.mixlayer)
 		image = bc.dream(np.float32(Image.open(args.image)), end=layer, iter_n=args.iteration_count, objective_fn=BatCountry.guided_objective, objective_features=mixed_features, )
 	else:
