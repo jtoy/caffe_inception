@@ -184,13 +184,6 @@ class BatCountry:
 	def L2_objective(dst):
 		dst.diff[:] = dst.data
 
-	# Add some new objective functions
-	@staticmethod
-	def disable_class_objective(dst, class=None):
-		dc = dst.data
-		dc.flat[class] = 1.
-		dst.diff[:] = dc
-
 	@staticmethod
 	def guided_objective(dst, objective_features):
 		x = dst.data[0].copy()
