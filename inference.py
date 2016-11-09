@@ -25,7 +25,7 @@ ap.add_argument("--image", required=True, help="path to base image")
 ap.add_argument("--output",  help="path to output image")
 ap.add_argument("--iteration_count",default=20, type=int, help="iterations for dreaming")
 ap.add_argument("--guide", help="Image to guide deep dream")
-ap.add_argument("--mix-layer", help="Layer to mix")
+ap.add_argument("--mixlayer", help="Layer to mix")
 
 args = ap.parse_args()
 if args.output == None:
@@ -47,7 +47,7 @@ for layer in args.layer:
     objective_features=features,)
 
 	elif args.mix-layer:
-		mixed_features = bc.prepare_guide(Image.open(args.image), end=args.mix-layer)
+		mixed_features = bc.prepare_guide(Image.open(args.image), end=args.mixlayer)
 		image = bc.dream(np.float32(Image.open(args.image)), end=layer, iter_n=args.iteration_count, objective_fn=BatCountry.guided_objective, objective_features=mixed_features, )
 	else:
 		image = bc.dream(np.float32(Image.open(args.image)), end=layer,
