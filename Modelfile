@@ -2,11 +2,11 @@ General:
   name: Somatic.io Demo for deep dream deep learning project
 
 Initialize:
-  _comment: remov hardcoded paths 
+  _comment: remov hardcoded paths
   workspace: /home/ubuntu/experiment/
 
 Train:
-  command: bash train.sh 
+  command: bash train.sh
   parameters:
     --iter:
       flag: --iter
@@ -14,7 +14,7 @@ Train:
       default: 5000
 
 Inference:
-  command: bash inference.sh	
+  command: bash inference.sh
   parameters:
    --layer:
      flag: --layer
@@ -31,3 +31,7 @@ Inference:
    --guide:
      flag: --guide
      type: file
+   --mix-layer:
+     flag: --mix-layer
+     type: string
+     default: 'inception_5b/output'
