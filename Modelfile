@@ -34,4 +34,3 @@ Inference:
    --mix-layer:
      flag: --mixlayer
      type: string
-     default: 'inception_5b/output'
