@@ -70,7 +70,7 @@ for layer in args.layer:
 				'end_step_size':6.
 			},
 			{
-				'layer':'loss2/classifier_zzzz'
+				'layer':'loss2/classifier_zzzz',
 				'scale':1.2,
 				'iter_n':150,
 				'start_sigma':0.78*1.2,
@@ -79,7 +79,7 @@ for layer in args.layer:
 				'end_step_size':3.
 			},
 			{
-				'layer':'loss1/classifier_zzzz'
+				'layer':'loss1/classifier_zzzz',
 				'iter_n':10,
 				'start_sigma':0.44,
 				'end_sigma':0.304,
