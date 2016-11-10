@@ -159,7 +159,7 @@ class BatCountry:
 						print("Doing nothing...")
 
 					if i % 10 == 0:
-						print 'finished step %d in octave %d' % (i,e)
+						print "finished step %d in octave %d" %(i,e)
 
 					image[:,ox:ox+w,oy:oy+h] = src.data[0]
 		return BatCountry.deprocess(self.net, image)
