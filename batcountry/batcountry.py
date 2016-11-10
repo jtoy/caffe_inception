@@ -157,7 +157,7 @@ class BatCountry:
 				sigma = o['start_sigma'] + ((o['end_sigma'] - o['start_sigma']) * i) / o['iter_n']
 				step_size = o['start_step_size'] + ((o['end_step_size'] - o['start_step_size']) * i) / o['iter_n']
 
-				class_step(self.net, end=layer, clip=clip, focus=focus, sigma=sigma, step_size=step_size)
+				BatCountry.class_step(self.net, end=layer, clip=clip, focus=focus, sigma=sigma, step_size=step_size)
 
 				if visualize:
 					print("Doing nothing...")
