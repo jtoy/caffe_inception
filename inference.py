@@ -88,7 +88,7 @@ for layer in args.layer:
 			}
 		]
 
-		image = bc.classdream(np.float32(Image.open(args.image)), octave, focus=args.classtoshow, random_crop=True, visualize=False)
+		image = bc.classdream(np.float32(Image.open(args.image)), octave=octave, focus=args.classtoshow, random_crop=True, visualize=False)
 
 	else:
 		image = bc.dream(np.float32(Image.open(args.image)), end=layer,
