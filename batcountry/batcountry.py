@@ -146,22 +146,26 @@ class BatCountry:
 
 						src.data[0] = image[:,ox:ox+w,oy:oy+h]
 					else:
-						ox = 0;
-						oy = 0;
-						src.data[0] = image.copy()
+						ox = (imw-w)/2.
+						oy = (imh-h)/2.
+						src.data[0] = image[:,ox:ox+w,oy:oy+h]
+				else:
+					ox = 0
+					oy = 0
+					src.data[0] = image.copy()
 
-					sigma = o['start_sigma'] + ((o['end_sigma'] - o['start_sigma']) * i) / o['iter_n']
-					step_size = o['start_step_size'] + ((o['end_step_size'] - o['start_step_size']) * i) / o['iter_n']
+				sigma = o['start_sigma'] + ((o['end_sigma'] - o['start_sigma']) * i) / o['iter_n']
+				step_size = o['start_step_size'] + ((o['end_step_size'] - o['start_step_size']) * i) / o['iter_n']
 
-					class_step(self.net, end=layer, clip=clip, focus=focus, sigma=sigma, step_size=step_size)
+				class_step(self.net, end=layer, clip=clip, focus=focus, sigma=sigma, step_size=step_size)
 
-					if visualize:
-						print("Doing nothing...")
+				if visualize:
+					print("Doing nothing...")
 
-					if i % 10 == 0:
-						print "finished step %d in octave %d" %(i,e)
+				if i % 10 == 0:
+					print("finished step {} in octave {}".format(i, e))
 
-					image[:,ox:ox+w,oy:oy+h] = src.data[0]
+				image[:,ox:ox+w,oy:oy+h] = src.data[0]
 		return BatCountry.deprocess(self.net, image)
 
 
