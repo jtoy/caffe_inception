@@ -116,6 +116,57 @@ class BatCountry:
 
 		return r
 
+	def classdream(self, base_img, octaves, random_crop=True, visualize=False, focus=None, clip=True, **step_params):
+		image = BatCountry.preprocess(self.net, base_img)
+
+		w = self.net.blobs['data'].width
+		h = self.net.blobs['data'].height
+
+		src = self.net.blobs['data']
+		src.reshape(1,3,h,w)
+
+		for e,o in enumerate(octaves):
+			if 'scale' in o:
+				image = nd.zoom(image, (1,o['scale'],o['scale']))
+			_,imw,imh = image.shape
+
+			layer = o['layer']
+
+			for i in xrange(o['iter_n']):
+				if imw > w:
+					if random_crop:
+						mid_x = (imw-w)/2.
+						width_x = imw-w
+						ox = np.random.normal(mid_x, width_x*0.3, 1)
+						ox = int(np.clip(ox,0,imw-w))
+						mid_y = (imh-h)/2.
+						width_y = imh - h
+						oy = np.random.normal(mid_y, width_y*0.3, 1)
+						oy = int(np.clip(oy,0,imh-h))
+
+						src.data[0] = image[:,ox:ox+w,oy:oy+h]
+					else:
+						ox = 0;
+						oy = 0;
+						src.data[0] = image.copy()
+
+					sigma = o['start_sigma'] + ((o['end_sigma'] - o['start_sigma']) * i) / o['iter_n']
+					step_size = o['start_step_size'] + ((o['end_step_size'] - o['start_step_size']) * i) / o['iter_n']
+
+					class_step(self.net, end=layer, clip=clip, focus=focus, sigma=sigma, step_size=step_size)
+
+					if visualize:
+						print("Doing nothing...")
+
+					if i % 10 == 0:
+						print 'finished step %d in octave %d' % (i,e)
+
+					image[:,ox:ox+w,oy:oy+h] = src.data[0]
+		return BatCountry.deprocess(self.net, image)
+
+
+
+
 	@staticmethod
 	def gradient_ascent_step(net, step_size=1.5, end="inception_4c/output",
 		jitter=32, clip=True, objective_fn=None, **objective_params):
@@ -205,3 +256,39 @@ class BatCountry:
 	@staticmethod
 	def deprocess(net, img):
 		return np.dstack((img + net.transformer.mean["data"])[::-1])
+
+
+	# Added for class visualization
+	# PLEASE MODIFY ME
+
+	@staticmethod
+	def blur(img, sigma):
+		if sigma > 0:
+			img[0] = nd.filters.gaussian_filter(img[0], sigma, order=0)
+			img[1] = nd.filters.gaussian_filter(img[1], sigma, order=0)
+			img[2] = nd.filters.gaussian_filter(img[2], sigma, order=0)
+		return img
+
+	@staticmethod
+	def class_step(net, step_size=1.5, end='inception_4c/output', clip=True, focus=None, sigma=None):
+		src = net.blobs['data']
+		dst = net.blobs[end]
+
+		net.forward(end=end)
+
+		one_hot = np.zeros_like(dst.data)
+		one_hot.flat[focus] = 1.
+		dst.diff[:] = one_hot
+
+		net.backward(start=end)
+		g = src.diff[0]
+
+		src.data[:] += step_size/np.abs(g).mean() * g
+
+		if clip:
+			bias = net.transformer.mean['data']
+			src.data[:] = np.clip(src.data, -bias, 255-bias)
+
+		src.data[0] = blur(src.data[0], sigma)
+
+		dst.diff.fill(0.)

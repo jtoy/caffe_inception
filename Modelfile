@@ -34,3 +34,6 @@ Inference:
    --mix-layer:
      flag: --mixlayer
      type: string
+   --class-to-show
+     flag: --classtoshow
+     type: int

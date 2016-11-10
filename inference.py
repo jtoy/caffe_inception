@@ -26,7 +26,7 @@ ap.add_argument("--output",  help="path to output image")
 ap.add_argument("--iteration_count",default=20, type=int, help="iterations for dreaming")
 ap.add_argument("--guide", help="Image to guide deep dream")
 ap.add_argument("--mixlayer", help="Layer to mix")
-
+ap.add_argument("--classtoshow", help="Specific image to show")
 args = ap.parse_args()
 if args.output == None:
   args.output = "/data/output/"+ str(int(time.time())) + ".jpg"
@@ -49,6 +49,47 @@ for layer in args.layer:
 	elif args.mixlayer:
 		mixed_features = bc.prepare_guide(Image.open(args.image), end=args.mixlayer)
 		image = bc.dream(np.float32(Image.open(args.image)), end=layer, iter_n=args.iteration_count, objective_fn=BatCountry.guided_objective, objective_features=mixed_features, )
+
+	elif args.classtoshow:
+		octaves = [
+			{
+				'layer':'loss3/classifier_zzzz',
+				'iter_n':190,
+				'start_sigma':2.5,
+				'end_sigma':0.78,
+				'start_step_size':11.,
+				'end_step_size':11.
+			},
+			{
+				'layer':'loss3/classifier_zzzz',
+				'scale':1.2,
+				'iter_n':150,
+				'start_sigma':0.78*1.2,
+				'end_sigma':0.78,
+				'start_step_size':6.,
+				'end_step_size':6.
+			},
+			{
+				'layer':'loss2/classifier_zzzz'
+				'scale':1.2,
+				'iter_n':150,
+				'start_sigma':0.78*1.2,
+				'end_sigma':0.44,
+				'start_step_size':6.,
+				'end_step_size':3.
+			},
+			{
+				'layer':'loss1/classifier_zzzz'
+				'iter_n':10,
+				'start_sigma':0.44,
+				'end_sigma':0.304,
+				'start_step_size':3.,
+				'end_step_size':3.
+			}
+		]
+
+		image = bc.classdream(np.float32(Image.open(args.image)), octave, focus=args.classtoshow, random_crop=True, visualize=False)
+
 	else:
 		image = bc.dream(np.float32(Image.open(args.image)), end=layer,
 		iter_n=args.iteration_count)
