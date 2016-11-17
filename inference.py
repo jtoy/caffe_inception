@@ -26,7 +26,7 @@ ap.add_argument("--output",  help="path to output image")
 ap.add_argument("--iteration_count",default=20, type=int, help="iterations for dreaming")
 ap.add_argument("--guide", help="Image to guide deep dream")
 ap.add_argument("--mixlayer", help="Layer to mix")
-ap.add_argument("--classtoshow", help="Specific image to show")
+ap.add_argument("--classtoshow", type=int, help="Specific image to show")
 args = ap.parse_args()
 if args.output == None:
   args.output = "/data/output/"+ str(int(time.time())) + ".jpg"
@@ -38,7 +38,12 @@ files.sort(key=lambda x: os.path.getmtime(x))
 model_file = files[-1]
 shutil.move(model_file, args.base_model+'/bvlc_googlenet.caffemodel')
 # we can't stop here...
-bc = BatCountry(args.base_model)
+if args.classtoshow:
+	bc = BatCountry(args.base_model, deploy_path='/data/model_cache/deploy_class.prototxt')
+else:
+	bc = BatCountry(args.base_model)
+
+
 for layer in args.layer:
 	if args.guide:
 		features = bc.prepare_guide(Image.open(args.guide), end=layer)
@@ -68,6 +73,23 @@ for layer in args.layer:
 				'end_sigma':0.78,
 				'start_step_size':6.,
 				'end_step_size':6.
+			},
+			{
+				'layer':'loss2/classifier_zzzz',
+				'scale':1.2,
+				'iter_n':150,
+				'start_sigma':0.78*1.2,
+				'end_sigma':0.44,
+				'start_step_size':6.,
+				'end_step_size':3.
+			},
+			{
+				'layer':'loss1/classifier_zzzz',
+				'iter_n':10,
+				'start_sigma':0.44,
+				'end_sigma':0.304,
+				'start_step_size':3.,
+				'end_step_size':3.
 			}
 		]
 

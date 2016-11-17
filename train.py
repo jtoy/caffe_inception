@@ -46,6 +46,16 @@ def create_deploy(train_path, classes):
       f.write(text)
     print "Succesfully created deploy.proto file"
 
+def create_deploy_class(train_path, classes):
+    filename = '/data/model_cache/deploy_class.prototxt'
+    with open('deploy_proto_class_template', 'r') as f:
+      text = f.read()
+    text = text.replace('$class_count', classes)
+    with open(filename, 'w') as f:
+      f.write(text)
+
+
+
 def transform_img(img, img_width=IMAGE_WIDTH, img_height=IMAGE_HEIGHT):
     #Histogram Equalization
     img[:, :, 0] = cv2.equalizeHist(img[:, :, 0])
