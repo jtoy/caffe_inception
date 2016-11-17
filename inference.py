@@ -26,7 +26,7 @@ ap.add_argument("--output",  help="path to output image")
 ap.add_argument("--iteration_count",default=20, type=int, help="iterations for dreaming")
 ap.add_argument("--guide", help="Image to guide deep dream")
 ap.add_argument("--mixlayer", help="Layer to mix")
-ap.add_argument("--classtoshow", type=int, help="Specific image to show")
+ap.add_argument("--classtoshow", help="Specific image to show")
 args = ap.parse_args()
 if args.output == None:
   args.output = "/data/output/"+ str(int(time.time())) + ".jpg"
@@ -93,7 +93,7 @@ for layer in args.layer:
 			}
 		]
 
-		image = bc.classdream(np.float32(Image.open(args.image)), octaves, focus=args.classtoshow, random_crop=True, visualize=False)
+		image = bc.classdream(np.float32(Image.open(args.image)), octaves, focus=int(args.classtoshow), random_crop=True, visualize=False)
 
 	else:
 		image = bc.dream(np.float32(Image.open(args.image)), end=layer,
