@@ -293,6 +293,6 @@ class BatCountry:
 			bias = net.transformer.mean['data']
 			src.data[:] = np.clip(src.data, -bias, 255-bias)
 
-		src.data[0] = BatCountry.blur(src.data[0], sigma)
+		#src.data[0] = BatCountry.blur(src.data[0], sigma)
 
 		dst.diff.fill(0.)
