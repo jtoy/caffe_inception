@@ -274,7 +274,7 @@ class BatCountry:
 		return img
 
 	@staticmethod
-	def class_step(net, step_size=1.5, end='inception_4c/output', clip=True, focus=None, sigma=None):
+	def class_step(net, step_size=1, end='inception_4c/output', clip=True, focus=None, sigma=None):
 		src = net.blobs['data']
 		dst = net.blobs[end]
 
