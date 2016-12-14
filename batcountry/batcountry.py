@@ -116,7 +116,7 @@ class BatCountry:
 
 		return r
 
-	def classdream(self, base_img, octaves, random_crop=True, visualize=False, focus=None, clip=True, **step_params):
+	def classdream(self, base_img, octaves, random_crop=False, visualize=False, focus=None, clip=True, **step_params):
 		image = BatCountry.preprocess(self.net, base_img)
 
 		w = self.net.blobs['data'].width

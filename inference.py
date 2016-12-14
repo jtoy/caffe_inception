@@ -67,7 +67,6 @@ for layer in args.layer:
 			},
 			{
 				'layer':'loss3/classifier_zzzz',
-				'scale':1.2,
 				'iter_n':150,
 				'start_sigma':0.78*1.2,
 				'end_sigma':0.78,
@@ -76,7 +75,6 @@ for layer in args.layer:
 			},
 			{
 				'layer':'loss2/classifier_zzzz',
-				'scale':1.2,
 				'iter_n':150,
 				'start_sigma':0.78*1.2,
 				'end_sigma':0.44,
@@ -93,7 +91,7 @@ for layer in args.layer:
 			}
 		]
 
-		image = bc.classdream(np.float32(Image.open(args.image)), octaves, focus=int(args.classtoshow), random_crop=True, visualize=False)
+		image = bc.classdream(np.float32(Image.open(args.image)), octaves, focus=int(args.classtoshow), random_crop=False, visualize=False)
 
 	else:
 		image = bc.dream(np.float32(Image.open(args.image)), end=layer,
