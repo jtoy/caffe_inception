@@ -83,7 +83,7 @@ for layer in args.layer:
 			},
 			{
 				'layer':'loss1/classifier_zzzz',
-				'iter_n':10,
+				'iter_n':150,
 				'start_sigma':0.44,
 				'end_sigma':0.304,
 				'start_step_size':3.,
