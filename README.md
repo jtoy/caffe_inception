@@ -1,10 +1,12 @@
 #Inception and Deep-dream with Caffe
 
+My experiments with trying to get deep dream to hallucinate and merge different classes and layers together.
 This repo can be used to train cutom models just by providing a set of images.
+
+# training 
 
 python train.py /ROOT/dataset/classes/
 
-It is that simple.
 
 The script assumes that images are broken down into sperate categories and placed in their respective folder. We use
 bvlc_googlenet network architecture for training.
