@@ -1,5 +1,4 @@
-General:
-  name: Somatic.io Demo for deep dream deep learning project
+
 
 Initialize:
   _comment: remov hardcoded paths
